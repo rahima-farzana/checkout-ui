@@ -37,7 +37,7 @@ jobs:
       - name: Reconcile S3 Asset State
         run: |
           # Dynamically determine the bucket from the repository's configuration
-          aws s3 sync frontend/dist/ s3://wezvatech-eks-backup-2026-may/ --delete
+          aws s3 sync dist/ s3://wezvatech-eks-backup-2026-may/ --delete
 
       - name: Invalidate CDN Edge Cache
         run: |
