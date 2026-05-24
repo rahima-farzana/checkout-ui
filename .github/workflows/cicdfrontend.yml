@@ -1,0 +1,47 @@
+name: "Frontend GitOps Assest Sync"
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: "Build & Deploy Frontend"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: './frontend/package-lock.json'
+
+      - name: Install & Compile React App
+        run: |
+          npm install --legacy-peer-deps
+          npm run build
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-south-1
+
+      - name: Reconcile S3 Asset State
+        run: |
+          # Dynamically determine the bucket from the repository's configuration
+          aws s3 sync frontend/dist/ s3://wezvatech-eks-backup-2026-may/ --delete
+
+      - name: Invalidate CDN Edge Cache
+        run: |
+          # Force CloudFront edge nodes to sync immediately with the new Git-driven state
+          DIST_ID=$(aws cloudfront list-distributions --query "DistributionList.Items[?Comment=='Fintech Checkout UI Frontend Distribution Network'].Id" --output text)
+          if [ "$DIST_ID" != "None" ]; then
+            aws cloudfront create-invalidation --distribution-id $DIST_ID --paths "/*"
+          fi
+
