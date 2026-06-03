@@ -41,9 +41,16 @@ jobs:
 
       - name: Invalidate CDN Edge Cache
         run: |
-          # Force CloudFront edge nodes to sync immediately with the new Git-driven state
-          DIST_ID=$(aws cloudfront list-distributions --query "DistributionList.Items[?Comment=='Fintech Checkout UI Frontend Distribution Network'].Id" --output text)
-          if [ "$DIST_ID" != "None" ]; then
-            aws cloudfront create-invalidation --distribution-id $DIST_ID --paths "/*"
-          fi
+          DIST_ID=$(aws cloudfront list-distributions \
+            --query "DistributionList.Items[?Comment=='Fintech Checkout UI Frontend Distribution Network'].Id" \
+            --output text)
 
+          echo "DIST_ID=$DIST_ID"
+      
+          if [ -n "$DIST_ID" ] && [ "$DIST_ID" != "None" ]; then
+            aws cloudfront create-invalidation \
+              --distribution-id "$DIST_ID" \
+              --paths "/*"
+          else
+            echo "No CloudFront distribution found"
+          fi
