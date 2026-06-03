@@ -39,6 +39,12 @@ jobs:
           # Dynamically determine the bucket from the repository's configuration
           aws s3 sync dist/ s3://wezvatech-eks-backup-2026-may/ --delete
 
+      - name: List CloudFront Distributions
+        run: |
+          aws cloudfront list-distributions \
+            --query "DistributionList.Items[*].[Id,Comment]" \
+            --output table
+
       - name: Invalidate CDN Edge Cache
         run: |
           DIST_ID=$(aws cloudfront list-distributions \
