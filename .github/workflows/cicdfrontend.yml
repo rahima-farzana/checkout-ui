@@ -71,7 +71,7 @@ jobs:
             -Dsonar.projectKey=checkout-ui
             -Dsonar.organization=wezva-fintech
             -Dsonar.sources=src
-            -Dsonar.tests=src
+            -Dsonar.test.inclusions=**/*.test.js,**/*.test.jsx,**/*.spec.js,**/*.spec.jsx
             -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
             -Dsonar.typescript.lcov.reportPaths=coverage/lcov.info
             -Dsonar.branch.name=${{ github.ref_name }}
