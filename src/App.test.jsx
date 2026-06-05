@@ -1,7 +1,8 @@
 import { describe, it, expect } from "vitest";
+import App from "./App";
 
-describe("sample test", () => {
-    it("should pass", () => {
-        expect(1 + 1).toBe(2);
+describe("App Component", () => {
+    it("should import App component", () => {
+        expect(App).toBeDefined();
     });
 });
