@@ -63,6 +63,7 @@ jobs:
 
       - name: SonarCloud SAST Scan
         if: github.ref == 'refs/heads/main'
+        uses: SonarSource/sonarcloud-github-action@master
         env:
           SONAR_TOKEN: ${{ secrets.sonarcloud }}
         with:
