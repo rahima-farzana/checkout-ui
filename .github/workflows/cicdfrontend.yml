@@ -26,10 +26,14 @@ jobs:
           cache: 'npm'
           cache-dependency-path: 'package-lock.json'
 
-      - name: Install & Compile React App
-        run: |
-          npm install --legacy-peer-deps
-          npm run build
+      - name: Install Dependencies
+        run: npm install --legacy-peer-deps
+
+      - name: NPM Audit Scan
+        run: npm audit --audit-level=high
+
+      - name: Build Application
+        run: npm run build
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
