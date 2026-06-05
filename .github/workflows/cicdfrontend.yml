@@ -44,6 +44,16 @@ jobs:
       - name: Build Application
         run: npm run build
 
+      - name: Verify Build Artifact
+        run: |
+          ls -la dist/
+
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-build
+          path: dist/
+
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
