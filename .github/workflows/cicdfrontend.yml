@@ -48,7 +48,12 @@ jobs:
 
       - name: Install Test Dependencies
         run: |
-          npm install --save-dev vitest jsdom @testing-library/react @testing-library/jest-dom
+          npm install --save-dev \
+           vitest \
+           jsdom \
+           @testing-library/react \
+           @testing-library/jest-dom \
+           @vitest/coverage-v8 
 
       - name: Run Unit Tests
         run: npm test
