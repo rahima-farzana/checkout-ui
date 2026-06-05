@@ -6,7 +6,11 @@ on:
       - main
 
   workflow_dispatch:
-
+    inputs:
+      s3bucket:
+        description: "s3 bucket"
+        required: true
+        default: "wezvatech-eks-backup-2026-may"
 jobs:
   deploy:
     name: "Build & Deploy Frontend"
@@ -37,16 +41,10 @@ jobs:
       - name: Reconcile S3 Asset State
         run: |
           # Dynamically determine the bucket from the repository's configuration
-          aws s3 sync dist/ s3://wezvatech-eks-backup-2026-may/ --delete
+          aws s3 sync dist/ s3://${{ inputs.s3bucket }}/ --delete
 
-      - name: List CloudFront Distributions
-        run: |
-          aws cloudfront list-distributions \
-            --query "DistributionList.Items[*].[Id,Comment]" \
-            --output table
-
-      - name: Invalidate CDN Edge Cache
-        run: |
-          aws cloudfront create-invalidation \
-            --distribution-id E37FQUI5EWS0E6 \
-            --paths "/*"
+#      - name: Invalidate CDN Edge Cache
+#        run: |
+#          aws cloudfront create-invalidation \
+#            --distribution-id E37FQUI5EWS0E6 \
+#            --paths "/*"
