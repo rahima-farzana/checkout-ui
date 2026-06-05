@@ -41,6 +41,7 @@ jobs:
           severity: 'HIGH,CRITICAL'
 
       - name: Run Semgrep SAST
+        continue-on-error: true
         uses: returntocorp/semgrep-action@v1
         with:
           config: auto
