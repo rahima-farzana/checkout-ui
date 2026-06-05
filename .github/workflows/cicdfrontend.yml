@@ -73,8 +73,13 @@ jobs:
 
       - name: Reconcile S3 Asset State
         run: |
-          # Dynamically determine the bucket from the repository's configuration
-          aws s3 sync dist/ s3://${{ inputs.s3bucket }}/ --delete
+          BUCKET="${{ github.event.inputs.s3bucket }}"
+      
+          if [ -z "$BUCKET" ]; then
+            BUCKET="wezvatech-eks-backup-2026-may"
+          fi
+      
+          aws s3 sync dist/ s3://$BUCKET/ --delete
 
 #      - name: Invalidate CDN Edge Cache
 #        run: |
