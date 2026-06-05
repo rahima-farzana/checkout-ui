@@ -61,6 +61,21 @@ jobs:
       - name: Code Coverage
         run: npx vitest run --coverage
 
+      - name: SonarCloud SAST Scan
+        if: github.ref == 'refs/heads/main'
+        env:
+          SONAR_TOKEN: ${{ secrets.sonarcloud }}
+        with:
+          args: >
+            -Dsonar.projectKey=wezva-fintech_checkout-ui
+            -Dsonar.organization=wezva-fintech
+            -Dsonar.sources=src
+            -Dsonar.tests=src
+            -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
+            -Dsonar.typescript.lcov.reportPaths=coverage/lcov.info
+            -Dsonar.branch.name=${{ github.ref_name }}
+            -Dsonar.qualitygate.wait=true
+
       - name: Build Application
         run: npm run build
 
