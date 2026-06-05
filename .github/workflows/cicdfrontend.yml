@@ -68,7 +68,7 @@ jobs:
           SONAR_TOKEN: ${{ secrets.sonarcloud }}
         with:
           args: >
-            -Dsonar.projectKey=wezva-fintech_checkout-ui
+            -Dsonar.projectKey=checkout-ui
             -Dsonar.organization=wezva-fintech
             -Dsonar.sources=src
             -Dsonar.tests=src
