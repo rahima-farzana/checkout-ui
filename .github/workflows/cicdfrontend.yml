@@ -91,7 +91,7 @@ jobs:
         run: |
           aws s3 sync dist/ s3://${{ github.event.inputs.s3bucket || 'wezvatech-eks-backup-2026-may' }}/ --delete
 
-#      - name: Invalidate CDN Edge Cache
+#      - name: Invalidate CDN Edge Cache.
 #        run: |
 #          aws cloudfront create-invalidation \
 #            --distribution-id E37FQUI5EWS0E6 \
