@@ -20,7 +20,7 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # Full git history required for accurate Sonar analysis
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -64,15 +64,15 @@ jobs:
       - name: Code Coverage
         run: npx vitest run --coverage || true
 
-     - name: SonarCloud SAST Scan
+      - name: SonarCloud SAST Scan
         if: github.ref == 'refs/heads/main'
         uses: sonarsource/sonarqube-scan-action@v6
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
           args: >
-           -Dsonar.projectKey=rahima-farzana_checkout-ui
--Dsonar.organization=rahima-farzana
+            -Dsonar.projectKey=rahima-farzana_checkout-ui
+            -Dsonar.organization=rahima-farzana
             -Dsonar.sources=src
             -Dsonar.test.inclusions=**/*.test.js,**/*.test.jsx,**/*.spec.js,**/*.spec.jsx
             -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
@@ -93,4 +93,3 @@ jobs:
       - name: Reconcile S3 Asset State
         run: |
           aws s3 sync dist/ s3://${{ github.event.inputs.s3bucket || 'wezwatech-checkout-ui-may26' }}/ --delete
-          #
