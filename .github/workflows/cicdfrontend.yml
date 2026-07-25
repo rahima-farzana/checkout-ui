@@ -71,8 +71,8 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
           args: >
-            -Dsonar.projectKey=wezva-fintech_checkout-ui
-            -Dsonar.organization=wezva-fintech
+           -Dsonar.projectKey=rahima-farzana_checkout-ui
+-Dsonar.organization=rahima-farzana
             -Dsonar.sources=src
             -Dsonar.test.inclusions=**/*.test.js,**/*.test.jsx,**/*.spec.js,**/*.spec.jsx
             -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
