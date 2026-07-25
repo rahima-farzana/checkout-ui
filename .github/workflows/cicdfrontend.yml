@@ -29,8 +29,8 @@ jobs:
       - name: Install Dependencies
         run: npm install --legacy-peer-deps
 
-      - name: Audit Dependencies
-        run: npm audit --audit-level=high || true
+      - name: NPM Audit Scan
+        run: npm audit --audit-level=high
 
       - name: Run Trivy FS Scan
         uses: aquasecurity/trivy-action@master
@@ -63,9 +63,9 @@ jobs:
 
       - name: SonarCloud SAST Scan
         if: github.ref == 'refs/heads/main'
-        uses: SonarSource/sonarqube-github-action@master
+        uses: SonarSource/sonarcloud-github-action@master
         env:
-          SONAR_TOKEN: ${{ secrets.SONARQUBE }}
+          SONAR_TOKEN: ${{ secrets.sonarcloud }}
         with:
           args: >
             -Dsonar.projectKey=wezva-fintech_checkout-ui
@@ -91,7 +91,7 @@ jobs:
         run: |
           aws s3 sync dist/ s3://${{ github.event.inputs.s3bucket || 'wezvatech-eks-backup-2026-may' }}/ --delete
 
-#      - name: Invalidate CDN Edge Cache.
+#      - name: Invalidate CDN Edge Cache
 #        run: |
 #          aws cloudfront create-invalidation \
 #            --distribution-id E37FQUI5EWS0E6 \
