@@ -63,9 +63,9 @@ jobs:
 
       - name: SonarCloud SAST Scan
         if: github.ref == 'refs/heads/main'
-        uses: SonarSource/sonarcloud-github-action@master
+        uses: SonarSource/sonarqube-github-action@master
         env:
-          SONAR_TOKEN: ${{ secrets.sonarcloud }}
+          SONAR_TOKEN: ${{ secrets.SONARQUBE }}
         with:
           args: >
             -Dsonar.projectKey=wezva-fintech_checkout-ui
